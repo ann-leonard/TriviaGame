@@ -19,6 +19,9 @@ var score = 0;
 var quesInc = 0;
 var answerBtns = $(".answerBtn");
 answerBtns.hide();
+var number = 15;
+var intervalId;
+
 
 //shuffles the items in an array
 function randomShuffle(array) {
@@ -70,6 +73,22 @@ $(".answerBtn").on("click",
 
 $(".startBtn").on("click", render);
 
+function run() {
+    clearInterval(intervalId);
+    intervalId = setInterval(decrement, 1000);
+  }
+function decrement() {
+    number--;
+
+    $("#timer").html("<h2>" + number + "</h2>");
+    
+    if (number === 0) {
+        stop();
+        alert("Time Up!");
+    }
+}
+
+
 
 function render() {
     $("#welcome").empty()
@@ -80,3 +99,7 @@ function render() {
     $("h3").text(questionList[quesInc].question)
     displayOptions(quesInc)
 };
+function stop() {
+
+      clearInterval(intervalId);
+}
