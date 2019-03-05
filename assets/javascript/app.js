@@ -19,7 +19,8 @@ var score = 0;
 var quesInc = 0;
 var answerBtns = $(".answerBtn");
 answerBtns.hide();
-var number = 15;
+$("#timer").hide();
+var number = 16;
 var intervalId;
 
 
@@ -65,6 +66,8 @@ function gradeInput() {
 
     quesInc++;
     setTimeout(render, 1500);
+    clearInterval(intervalId);
+
 ;}
 
 
@@ -75,31 +78,29 @@ $(".startBtn").on("click", render);
 
 function run() {
     clearInterval(intervalId);
-    intervalId = setInterval(decrement, 1000);
+    intervalId = setInterval(timer, 1000);
   }
-function decrement() {
-    number--;
+  
+  function timer() {
+    --number;
 
-    $("#timer").html("<h2>" + number + "</h2>");
-    
-    if (number === 0) {
-        stop();
+    console.log(number)
+    $("#timer").html(`Time left: ${number}`)
+    if (number <= 0) {
+        clearInterval(intervalId);
         alert("Time Up!");
+        render();
     }
 }
-
-
 
 function render() {
     $("#welcome").empty()
     answerBtns.show()
     $("#welcome").append("<h1></h1>")
-    $("#welcome").append("<h3></h3>")
+    $("#welcome").append("<h3 id='domQuestion'></h3>")
+    $("#welcome").append("<h4 id='timer'></h4>")
     $("h1").text(`question #${quesInc + 1}:`)
     $("h3").text(questionList[quesInc].question)
     displayOptions(quesInc)
+    run();
 };
-function stop() {
-
-      clearInterval(intervalId);
-}
