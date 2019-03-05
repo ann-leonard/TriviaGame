@@ -16,7 +16,7 @@ var questionList = [
     }
 ]
 var score = 0;
-var quesInc = 0;
+var quesInc = -1;
 var answerBtns = $(".answerBtn");
 answerBtns.hide();
 $("#timer").hide();
@@ -64,7 +64,6 @@ function gradeInput() {
         alert("Nope sorry");    
     }
 
-    quesInc++;
     setTimeout(render, 1500);
     clearInterval(intervalId);
 
@@ -86,21 +85,23 @@ function run() {
 
     console.log(number)
     $("#timer").html(`Time left: ${number}`)
-    if (number <= 0) {
+    if (number === 0) {
         clearInterval(intervalId);
-        alert("Time Up!");
+     //   alert("Time Up!");
         render();
     }
 }
 
 function render() {
+    //++quesInc
     $("#welcome").empty()
     answerBtns.show()
     $("#welcome").append("<h1></h1>")
     $("#welcome").append("<h3 id='domQuestion'></h3>")
     $("#welcome").append("<h4 id='timer'></h4>")
-    $("h1").text(`question #${quesInc + 1}:`)
+    $("h1").text(`question #${++quesInc+1}:`)
     $("h3").text(questionList[quesInc].question)
     displayOptions(quesInc)
+    number = 16;
     run();
 };
