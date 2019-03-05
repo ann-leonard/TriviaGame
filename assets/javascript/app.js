@@ -58,16 +58,17 @@ function gradeInput() {
     userInput = this;
 
     if (userInput.innerHTML === questionList[quesInc].answer) {
-        alert("Correct");
+        $(this).css("background-color", "green")
+        score ++;
     }
-    else{
-        alert("Nope sorry");    
+    else {
+        $(this).css("background-color", "red")
     }
 
     setTimeout(render, 1500);
     clearInterval(intervalId);
-
-;}
+    ;
+}
 
 
 $(".answerBtn").on("click",
@@ -78,28 +79,44 @@ $(".startBtn").on("click", render);
 function run() {
     clearInterval(intervalId);
     intervalId = setInterval(timer, 1000);
-  }
-  
-  function timer() {
+}
+
+function timer() {
     --number;
 
     console.log(number)
     $("#timer").html(`Time left: ${number}`)
     if (number === 0) {
         clearInterval(intervalId);
-     //   alert("Time Up!");
-        render();
+    //alert("Time's up!")      
+    render();
     }
 }
 
-function render() {
-    //++quesInc
+   if (quesInc===questionList.length){function endGame(){
     $("#welcome").empty()
-    answerBtns.show()
     $("#welcome").append("<h1></h1>")
     $("#welcome").append("<h3 id='domQuestion'></h3>")
     $("#welcome").append("<h4 id='timer'></h4>")
-    $("h1").text(`question #${++quesInc+1}:`)
+    answerBtns.hide()
+    $("h1").text("Quiz over!");
+    $("h3").text(`Your score is ${score}/${questionList.length}`)
+    $("h4").text(`Percentage correct: ${score/questionList.length}`)
+    }
+   }
+
+
+function render() {
+    $("#welcome").empty()
+    answerBtns.show()
+    for (i = 0; i < answerBtns.length; i++) {
+        document.getElementsByClassName('answerBtn')[i].style.backgroundColor = null
+    }
+    $("#welcome").append("<h1></h1>")
+    $("#welcome").append("<h3 id='domQuestion'></h3>")
+    $("#welcome").append("<h4 id='timer'></h4>")
+
+    $("h1").text(`question #${++quesInc + 1}:`)
     $("h3").text(questionList[quesInc].question)
     displayOptions(quesInc)
     number = 16;
