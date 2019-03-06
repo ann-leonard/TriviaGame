@@ -59,7 +59,7 @@ function gradeInput() {
 
     if (userInput.innerHTML === questionList[quesInc].answer) {
         $(this).css("background-color", "green")
-        score ++;
+        score++;
     }
     else {
         $(this).css("background-color", "red")
@@ -67,7 +67,7 @@ function gradeInput() {
 
     setTimeout(render, 1500);
     clearInterval(intervalId);
-    ;
+ 
 }
 
 
@@ -88,25 +88,28 @@ function timer() {
     $("#timer").html(`Time left: ${number}`)
     if (number === 0) {
         clearInterval(intervalId);
-    //alert("Time's up!")      
-    render();
+        //alert("Time's up!")      
+        render();
     }
+
 }
 
-   if (quesInc===questionList.length){function endGame(){
+function endGame() {
     $("#welcome").empty()
     $("#welcome").append("<h1></h1>")
     $("#welcome").append("<h3 id='domQuestion'></h3>")
     $("#welcome").append("<h4 id='timer'></h4>")
     answerBtns.hide()
     $("h1").text("Quiz over!");
-    $("h3").text(`Your score is ${score}/${questionList.length}`)
-    $("h4").text(`Percentage correct: ${score/questionList.length}`)
-    }
-   }
+    $("h3").text(`Your score is ${score}/${questionList.length}`);
+    $("h4").text(`Percentage correct: ${score / questionList.length}`);
+    clearInterval(intervalId);
+}
+
 
 
 function render() {
+   
     $("#welcome").empty()
     answerBtns.show()
     for (i = 0; i < answerBtns.length; i++) {
@@ -114,9 +117,14 @@ function render() {
     }
     $("#welcome").append("<h1></h1>")
     $("#welcome").append("<h3 id='domQuestion'></h3>")
-    $("#welcome").append("<h4 id='timer'></h4>")
-
-    $("h1").text(`question #${++quesInc + 1}:`)
+    $("#welcome").append("<h4 id='timer'>Time left: </h4>")
+    $("timer").show();
+    $("#welcome").append("<hr>")
+    $("h1").text(`question #${++quesInc+1}:`)
+    if (quesInc >= questionList.length) {
+        endGame();
+    }
+ 
     $("h3").text(questionList[quesInc].question)
     displayOptions(quesInc)
     number = 16;
