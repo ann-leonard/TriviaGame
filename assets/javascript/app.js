@@ -45,7 +45,7 @@ var quesInc = -1;
 var answerBtns = $(".answerBtn");
 answerBtns.hide();
 $("#timer").hide();
-var number = 31;
+var timerCount = 31;
 var intervalId;
 function setup() {
     for (i = 0; i < questionList.length; i++) {
@@ -111,31 +111,15 @@ function run() {
 }
 
 function timer() {
-    --number;
+    --timerCount;
 
-    console.log(number)
-    $("#timer").html(`Time left: ${number}`)
-    if (number === 0) {
+    $("#timer").html(`Time left: ${timerCount}`)
+    if (timerCount === 0) {
         clearInterval(intervalId);
-        //alert("Time's up!")      
         render();
     }
 
 }
-
-function endGame() {
-    $("#welcome").empty()
-    $("#welcome").append("<h1></h1>")
-    $("#welcome").append("<h3 id='domQuestion'></h3>")
-    $("#welcome").append("<h4 id='timer'></h4>")
-    answerBtns.hide()
-    $("h1").text("Quiz over!");
-    $("h3").text(`Your score is ${score}/${questionList.length}`);
-    $("h4").text(`Percentage correct: ${(score / questionList.length).toFixed(2)}`);
-    clearInterval(intervalId);
-}
-
-
 
 function render() {
     $("#welcome").empty()
@@ -148,7 +132,6 @@ function render() {
     $("#welcome").append("<h1></h1>")
     $("#welcome").append("<h3 id='domQuestion'></h3>")
     $("#welcome").append("<h4 id='timer'>Time left: </h4>")
-    $("timer").show();
     $("#welcome").append("<hr>")
     $("h1").text(`question #${++quesInc + 1}:`)
     if (quesInc >= questionList.length) {
@@ -157,6 +140,29 @@ function render() {
 
     $("h3").text(questionList[quesInc].question)
     displayOptions(quesInc)
-    number = 31;
+    timerCount = 31;
     run();
 };
+
+function endGame() {
+    $("#welcome").append("<a class='restartBtn btn btn-primary btn-lg' style='size:2em; font-size: 1.5em;'href=#' role='button'>Try Again?</a>")
+    answerBtns.hide()
+    $("#timer").hide()
+    $("h1").text("Quiz over!");
+    $("h3").text(`Your score is ${score}/${questionList.length}`);
+    clearInterval(intervalId);
+    quesInc=-1;
+    $(".restartBtn").on("click", function (){
+        restart();
+    })
+}
+
+function restart(){
+    var score = 0;
+    $("#welcome").empty()
+    $("#welcome").append('<h1 class="display-4 pb-2" style="font-size: 3em;">Welcome to "The Office" quiz!</h1>"')
+    $("#welcome").append('<h2  class="lead pb-4" style="font-size: 1.5em;">"You need to play to win. But you also need to win to play." - Michael Scott</h2>')
+    $("#welcome").append('<a class="startBtn btn btn-primary btn-lg" style="size:2em; font-size: 1.5em;"href="#" role="button">Start quiz!</a>')
+    setup();    
+    $(".restartBtn").on("click", render())
+}
